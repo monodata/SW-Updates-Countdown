@@ -28,6 +28,10 @@ mgmtPath="/Library/Application Support/Management"
 iconpath="/Library/Application Support/Pashua/icons/config.png"
 reboot_ld="/Library/LaunchDaemons/com.jamfhelper.reboot.plist"
 rebootfile="/Library/Application Support/Management/restart.sh"
+delay1=60
+delay2=3600
+delay3=14400
+delay4=36000
 
 #################################################
 #     FUNCTIONS
@@ -69,7 +73,7 @@ Choose when to reboot in the options below."
     -description "$message" \
     -icon "$iconpath" \
     -button1 "ok" \
-    -showDelayOptions "60, 3600, 14400, 36000" # 1 minute, 1 hour, 4 hours, 10 hours
+    -showDelayOptions "$delay1, $delay2, $delay3, $delay4" # 1 minute, 1 hour, 4 hours, 10 hours
 }
 
 # HUD with snooze button & countdown
@@ -245,17 +249,17 @@ if [[ $sw_reboot != "" ]]; then
   # case struct based on time selected
   case $delayint in
         # immediate reboot
-        60 )
+        $delay1 )
           counterUT 60 "Software Updates" "" &
           shutdown -r +1
           ;;
         # 1 hour: countdown notification 
-        3600 )
+        $delay2 )
           counterUT 3600 "Software Updates" "" &
           shutdown -r +60
           ;;
         # 4 hours / 1 hour reminder
-        14400 )
+        $delay3 )
           # calculate reminder
           delayhour=$(($delayint - 3600))
           # write launchdaemon & perms
@@ -265,7 +269,7 @@ if [[ $sw_reboot != "" ]]; then
           rebootHUD $delayint 
           ;;
         # 10 hours / 4 hour reminder
-        36000 )
+        $delay4 )
           # calculate reminder
           delayhour=$(($delayint - 14400))
           # write launchdaemon & perms
