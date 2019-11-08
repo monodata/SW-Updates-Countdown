@@ -213,7 +213,7 @@ reboot_ld_perms() {
 # check for swu that require reboot
 swu_reboot() {
   swu_check=$(softwareupdate -l)
-  sw_reboot="$(echo $swu_check | grep restart | grep -v '\*' | cut -d , -f )"
+  sw_reboot="$(echo $swu_check | grep restart | grep -v '\*' | cut -d',' -f2 )"
   sw_recom="$(echo $swu_check | grep -v restart)"
 }
 
